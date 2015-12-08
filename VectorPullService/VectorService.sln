@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorPullService", "VectorPullService\VectorPullService.csproj", "{96D98260-AB46-488E-9F8D-160CABE87543}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorService", "VectorPullService\VectorService.csproj", "{96D98260-AB46-488E-9F8D-160CABE87543}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
