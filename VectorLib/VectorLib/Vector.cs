@@ -12,11 +12,13 @@ namespace VectorLib
     {
         public string ConnectionString { get; private set; }
         private QueueClient QClient;
+        public string ConfigProfile { get; set; }
 
         private const string QName = "vectormain";
 
-        public Vector()
+        public Vector(string configProfile)
         {
+            ConfigProfile = configProfile;
             ConnectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
             QClient = QueueClient.CreateFromConnectionString(ConnectionString, QName, ReceiveMode.ReceiveAndDelete);
         }

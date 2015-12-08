@@ -12,6 +12,7 @@ namespace VectorPullService
 {
     class Program
     {
+        static EndPointManager man = new EndPointManager();
         static void Main(string[] args)
         {
             string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
@@ -29,7 +30,7 @@ namespace VectorPullService
 
         private static void MessageHandler(BrokeredMessage msg)
         {
-            Console.WriteLine(msg.Properties["message-content"]);
+            man.WriteMessageToEndpoints(msg);
         }
     }
 }
