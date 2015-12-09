@@ -14,5 +14,7 @@ namespace VectorPullService
         void Connect();
 
         void Disconnect();
+
+        string Name { get; }
     }
 }

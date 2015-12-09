@@ -9,6 +9,14 @@ namespace VectorPullService
 {
    public class ConsoleEndpoint : IEndpoint
     {
+        public string Name
+        {
+            get
+            {
+                return "Console";
+            }
+        }
+
         public void Connect()
         {
             

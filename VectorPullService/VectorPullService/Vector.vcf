@@ -1,0 +1,7 @@
+﻿:testProfile
+  Console
+  FlatFile
+:testConsole
+  Console
+:testFile
+  FlatFile

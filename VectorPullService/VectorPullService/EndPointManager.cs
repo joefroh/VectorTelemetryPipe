@@ -9,11 +9,40 @@ namespace VectorPullService
 {
     class EndPointManager
     {
-        private Dictionary<Type, IEndpoint> endpoints;
+        private Dictionary<string, IEndpoint> endpoints;
+        private ConfigurationProfileManager ConfigManager;
 
         public EndPointManager()
         {
-            endpoints = new Dictionary<Type, IEndpoint>();
+            endpoints = new Dictionary<string, IEndpoint>();
+            ConfigManager = new ConfigurationProfileManager("Vector.vcf");
+
+            ReflectionLoadEndpoints();
+        }
+
+        public void WriteMessageToEndpoints(BrokeredMessage message)
+        {
+            if (!message.Properties.ContainsKey("profile"))
+            {
+                return; //if you are losing messages, its probably here.
+            }
+            var messageProfile = FetchProfile((string)message.Properties["profile"]);
+            foreach (var endpoint in messageProfile.EndpointNames)
+            {
+                if (endpoints.ContainsKey(endpoint))
+                {
+                    endpoints[endpoint].Write(message);
+                }
+            }
+        }
+
+        private ConfigurationProfile FetchProfile(string profile)
+        {
+            return ConfigManager.GetConfigurationProfile(profile);
+        }
+
+        private void ReflectionLoadEndpoints()
+        {
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
             var types = assembly.GetExportedTypes();
 
@@ -23,16 +52,8 @@ namespace VectorPullService
                 {
                     var endpoint = (IEndpoint)Activator.CreateInstance(type);
                     endpoint.Connect();
-                    endpoints.Add(type, endpoint);
+                    endpoints.Add(endpoint.Name, endpoint);
                 }
-            }
-        }
-
-        public void WriteMessageToEndpoints(BrokeredMessage message)
-        {
-            foreach (var endpoint in endpoints)
-            {
-                endpoint.Value.Write(message);
             }
         }
     }

@@ -18,6 +18,14 @@ namespace VectorPullService
 
         StreamWriter writer;
 
+        public string Name
+        {
+            get
+            {
+                return "FlatFile";
+            }
+        }
+
         public FlatFileEndpoint()
         {
 
@@ -36,7 +44,7 @@ namespace VectorPullService
 
         public void Write(BrokeredMessage message)
         {
-            writer.WriteLine(String.Format(LogFormat, message.EnqueuedTimeUtc, message.Properties["message-content"]));
+            writer.WriteLine(String.Format(LogFormat, message.Properties["timestamp"], message.Properties["message-content"]));
             writer.Flush();
         }
     }
