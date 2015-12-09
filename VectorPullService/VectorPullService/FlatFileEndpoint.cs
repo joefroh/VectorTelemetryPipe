@@ -14,11 +14,13 @@ namespace VectorPullService
         private const string FileName = "TestLog";
         private const string Extension = "log";
 
+        private string FileNameOverride;
+
         private const string LogFormat = "{0}: {1}"; //DateTime: message
 
         StreamWriter writer;
 
-        public string Name
+        public virtual string Name
         {
             get
             {
@@ -31,10 +33,22 @@ namespace VectorPullService
 
         }
 
+        public FlatFileEndpoint(string fileName)
+        {
+            FileNameOverride = fileName;
+        }
+
         public void Connect()
         {
             Directory.CreateDirectory(Path);
-            writer = new StreamWriter(String.Format("{0}/{1}.{2}", Path, FileName, Extension), true/*append*/);
+            if (String.IsNullOrEmpty(FileNameOverride))
+            {
+                writer = new StreamWriter(String.Format("{0}/{1}.{2}", Path, FileName, Extension), true/*append*/);
+            }
+            else
+            {
+                writer = new StreamWriter(String.Format("{0}/{1}.{2}", Path, FileNameOverride, Extension), true/*append*/);
+            }
         }
 
         public void Disconnect()

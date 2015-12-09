@@ -9,10 +9,11 @@ namespace VectorPullService
 {
     class EndPointManager
     {
+        public static EndPointManager Instance = new EndPointManager();
         private Dictionary<string, IEndpoint> endpoints;
         private ConfigurationProfileManager ConfigManager;
 
-        public EndPointManager()
+        private EndPointManager()
         {
             endpoints = new Dictionary<string, IEndpoint>();
             ConfigManager = new ConfigurationProfileManager("Vector.vcf");
@@ -33,6 +34,7 @@ namespace VectorPullService
                 {
                     endpoints[endpoint].Write(message);
                 }
+                
             }
         }
 
@@ -55,6 +57,12 @@ namespace VectorPullService
                     endpoints.Add(endpoint.Name, endpoint);
                 }
             }
+
+            var msg = new BrokeredMessage();
+            msg.Properties["message-content"] = String.Format("{0} Endpoints Loaded", endpoints.Count);
+            msg.Properties["timestamp"] = DateTime.UtcNow;
+            
+            endpoints["VectorDebugLog"].Write(msg);
         }
     }
 }

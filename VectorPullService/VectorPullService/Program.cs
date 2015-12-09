@@ -13,7 +13,7 @@ namespace VectorPullService
 {
     class Program
     {
-        static EndPointManager man = new EndPointManager();
+        static EndPointManager man = EndPointManager.Instance;
 
         static void Main(string[] args)
         {

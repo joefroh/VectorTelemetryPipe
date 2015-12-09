@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="VectorDebugLog.cs" />
     <Compile Include="ConfigurationProfile.cs" />
     <Compile Include="ConfigurationProfileManager.cs" />
     <Compile Include="ConsoleEndpoint.cs" />
