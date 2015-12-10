@@ -5,3 +5,7 @@
   Console
 :testFile
   FlatFile
+:all
+  FlatFile
+  Console
+  AppInsights

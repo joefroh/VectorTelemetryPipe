@@ -14,21 +14,20 @@ namespace VectorTestApplication
             //StreamReader reader = new StreamReader("inputText.txt");
             //var words = reader.ReadLine().Split(' ');
 
-            var vector = new Vector("testFile");
+            var vector = new Vector("all");
 
             // foreach (var word in words)
             // {
             //  vector.WriteMessage(word);
             // }
-            var start = DateTime.UtcNow.Ticks; 
-            for(int i = 0; i < 1000; i++)
+            Console.WriteLine("ready");
+            var line = Console.ReadLine();
+            while (line != "")
             {
-                vector.WriteMessage(i.ToString());
+                vector.WriteMessage(line);
+                line = Console.ReadLine();
             }
-            var end = DateTime.UtcNow.Ticks;
-            var delta = TimeSpan.FromTicks(end - start);
-
-            Console.ReadLine();
+            
         }
     }
 }
