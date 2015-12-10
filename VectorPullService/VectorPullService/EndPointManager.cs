@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace VectorPullService
 {
-    class EndPointManager
+    public class EndPointManager
     {
         public static EndPointManager Instance = new EndPointManager();
         private Dictionary<string, IEndpoint> endpoints;
@@ -16,9 +16,9 @@ namespace VectorPullService
         private EndPointManager()
         {
             endpoints = new Dictionary<string, IEndpoint>();
-            ConfigManager = new ConfigurationProfileManager("Vector.vcf");
-
             ReflectionLoadEndpoints();
+            Instance = this;
+            ConfigManager = new ConfigurationProfileManager(@"C:\Temp\Config\Vector.vcf");
         }
 
         public void WriteMessageToEndpoints(BrokeredMessage message)
@@ -58,11 +58,15 @@ namespace VectorPullService
                 }
             }
 
-            var msg = new BrokeredMessage();
-            msg.Properties["message-content"] = String.Format("{0} Endpoints Loaded", endpoints.Count);
-            msg.Properties["timestamp"] = DateTime.UtcNow;
-            
-            endpoints["VectorDebugLog"].Write(msg);
+            WriteMessageToDebugLog(String.Format("{0} Endpoints Loaded", endpoints.Count));
+        }
+
+        public void WriteMessageToDebugLog(string msg)
+        {
+            var message = new BrokeredMessage();
+            message.Properties["message-content"] = msg;
+            message.Properties["timestamp"] = DateTime.UtcNow;
+            endpoints["VectorDebugLog"].Write(message);
         }
     }
 }

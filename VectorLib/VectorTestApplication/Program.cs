@@ -14,7 +14,7 @@ namespace VectorTestApplication
             //StreamReader reader = new StreamReader("inputText.txt");
             //var words = reader.ReadLine().Split(' ');
 
-            var vector = new Vector("testConsole");
+            var vector = new Vector("testFile");
 
             // foreach (var word in words)
             // {

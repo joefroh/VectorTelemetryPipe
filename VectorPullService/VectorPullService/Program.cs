@@ -13,16 +13,16 @@ namespace VectorPullService
 {
     class Program
     {
-        static EndPointManager man = EndPointManager.Instance;
+        //static EndPointManager man = EndPointManager.Instance;
 
         static void Main(string[] args)
         {
             var time = new System.Timers.Timer();
             time.AutoReset = true;
-            time.Interval = 100;
+            time.Interval = 10;
             time.Elapsed += ReadFromBus;
             time.Enabled = true;
-
+            EndPointManager.Instance.WriteMessageToDebugLog("Finished OnStart");
             Console.WriteLine("====Listening for messages. Press ENTER to quit.====");
             Console.ReadLine();
         }
@@ -36,7 +36,7 @@ namespace VectorPullService
 
             foreach (var message in messages)
             {
-                man.WriteMessageToEndpoints(message);
+                EndPointManager.Instance.WriteMessageToEndpoints(message);
             }
         }
     }

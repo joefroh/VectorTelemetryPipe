@@ -10,17 +10,30 @@ namespace VectorPullService
     class ConfigurationProfileManager
     {
         Dictionary<string, ConfigurationProfile> Profiles;
+        FileSystemWatcher Watcher;
+        string Path;
 
         public ConfigurationProfileManager(string path)
         {
             FileInfo info = new FileInfo(path);
             if (!info.Exists)
             {
+                EndPointManager.Instance.WriteMessageToDebugLog(String.Format("Provided config file {0} does not exist.", info.FullName));
                 throw new ArgumentException(String.Format("Provided config file {0} does not exist."), info.FullName);
             }
 
-            Profiles = new Dictionary<string, ConfigurationProfile>();
             LoadConfigs(path);
+            Path = path;
+
+            Watcher = new FileSystemWatcher(info.DirectoryName);
+            Watcher.Filter = info.Name;
+            Watcher.Changed += ConfigFileChanged;
+            Watcher.EnableRaisingEvents = true;
+        }
+
+        private void ConfigFileChanged(object sender, FileSystemEventArgs e)
+        {
+            LoadConfigs(Path);
         }
 
         public ConfigurationProfile GetConfigurationProfile(string name)
@@ -34,6 +47,8 @@ namespace VectorPullService
 
         private void LoadConfigs(string path)
         {
+            EndPointManager.Instance.WriteMessageToDebugLog("Loading Configurations");
+            Profiles = new Dictionary<string, ConfigurationProfile>();
             StreamReader reader = new StreamReader(path);
             var currentConfig = new ConfigurationProfile();
 
